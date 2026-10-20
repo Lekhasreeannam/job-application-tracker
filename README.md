@@ -39,6 +39,25 @@ job-application-tracker/
     ├── edit_application.html
     └── skill_matcher.html
 ```
+###  Create the database
+
+Open MySQL Workbench or a MySQL client and execute the SQL script in the project root:
+
+```text
+database.sql
+```
+
+Alternatively, run the script from a terminal:
+
+```bash
+mysql -u root -p < database.sql
+```
+
+Enter your local MySQL password when prompted. The script creates the `job_tracker` database and its required tables.
+
+### Configure your environment
+
+Create a local `.env` file based on `.env.example` and set your own MySQL connection details. Never commit your real `.env` file.
 
 ## Prerequisites
 
