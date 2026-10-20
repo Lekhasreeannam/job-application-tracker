@@ -1,0 +1,634 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Header */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 30px;
+            color: #172554;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin: 6px 0 0;
+        }
+
+        h2 {
+            color: #172554;
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        /* Navigation buttons */
+
+        .nav-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 16px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e8eefc;
+            color: #1d4ed8;
+        }
+
+        .btn-secondary:hover {
+            background: #dbe5fb;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+        }
+
+        .btn-small {
+            padding: 7px 11px;
+            font-size: 13px;
+        }
+
+        /* Success messages */
+
+        .message {
+            padding: 13px 16px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Dashboard cards */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin: 20px 0 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            line-height: 1.3;
+            font-weight: 700;
+            color: #172554;
+            margin-top: 8px;
+        }
+
+        .stat-applied {
+            border-top: 4px solid #3b82f6;
+        }
+
+        .stat-assessment {
+            border-top: 4px solid #8b5cf6;
+        }
+
+        .stat-interviews {
+            border-top: 4px solid #f59e0b;
+        }
+
+        .stat-offers {
+            border-top: 4px solid #16a34a;
+        }
+
+        .stat-rejected {
+            border-top: 4px solid #ef4444;
+        }
+
+        .stat-total {
+            border-top: 4px solid #172554;
+        }
+
+        /* Main application panel */
+
+        .panel {
+            background: white;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+        }
+
+        /* Search and filter form */
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            padding: 16px;
+            margin-bottom: 22px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        input,
+        select {
+            min-height: 42px;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            color: #1e293b;
+            font: inherit;
+            font-size: 14px;
+        }
+
+        input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        select {
+            min-width: 155px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: 2px solid #93c5fd;
+            outline-offset: 1px;
+            border-color: #2563eb;
+        }
+
+        .clear-link {
+            color: #475569;
+            text-decoration: none;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        .clear-link:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* Applications table */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 15px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .company-name {
+            font-weight: 600;
+            color: #172554;
+        }
+
+        .job-role {
+            color: #475569;
+        }
+
+        /* Application status labels */
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-applied {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-assessment {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .status-interview {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-offer {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status-withdrawn {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .delete-form {
+            display: inline;
+            margin: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px 20px;
+            color: #64748b;
+        }
+
+        .footer {
+            margin-top: 22px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Responsive layout */
+
+        @media (max-width: 850px) {
+            .container {
+                padding: 20px;
+            }
+
+            .dashboard {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .header {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 14px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 17px;
+            }
+
+            .panel {
+                padding: 15px;
+            }
+
+            .filters {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            input,
+            select {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .filters .btn {
+                text-align: center;
+            }
+
+            .nav-actions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <header class="header">
+            <div>
+                <h1>Job Application Tracker</h1>
+                <p class="subtitle">
+                    Manage your applications, track interviews, and monitor offers.
+                </p>
+            </div>
+
+            <nav class="nav-actions" aria-label="Main navigation">
+                <a class="btn btn-primary"
+                   href="{{ url_for('add_application') }}">
+                    + Add Application
+                </a>
+
+                <a class="btn btn-secondary"
+                   href="{{ url_for('skill_matcher_page') }}">
+                    Skill Matcher
+                </a>
+            </nav>
+        </header>
+
+        {% if added %}
+            <div class="message success" role="status">
+                Application added successfully!
+            </div>
+        {% endif %}
+
+        {% if updated %}
+            <div class="message success" role="status">
+                Application updated successfully!
+            </div>
+        {% endif %}
+
+        {% if deleted %}
+            <div class="message success" role="status">
+                Application deleted successfully!
+            </div>
+        {% endif %}
+
+        <section aria-labelledby="dashboard-heading">
+            <h2 id="dashboard-heading">Dashboard Overview</h2>
+
+            <div class="dashboard">
+
+                <div class="stat-card stat-total">
+                    <div class="stat-label">Total Applications</div>
+                    <div class="stat-number">{{ stats.total }}</div>
+                </div>
+
+                <div class="stat-card stat-applied">
+                    <div class="stat-label">Applied</div>
+                    <div class="stat-number">{{ stats.applied }}</div>
+                </div>
+
+                <div class="stat-card stat-assessment">
+                    <div class="stat-label">Assessments</div>
+                    <div class="stat-number">{{ stats.assessment }}</div>
+                </div>
+
+                <div class="stat-card stat-interviews">
+                    <div class="stat-label">Interviews</div>
+                    <div class="stat-number">{{ stats.interviews }}</div>
+                </div>
+
+                <div class="stat-card stat-offers">
+                    <div class="stat-label">Offers</div>
+                    <div class="stat-number">{{ stats.offers }}</div>
+                </div>
+
+                <div class="stat-card stat-rejected">
+                    <div class="stat-label">Rejected</div>
+                    <div class="stat-number">{{ stats.rejected }}</div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="panel" aria-labelledby="applications-heading">
+
+            <div class="section-heading">
+                <h2 id="applications-heading">My Applications</h2>
+            </div>
+
+            <form class="filters"
+                  method="GET"
+                  action="{{ url_for('home') }}">
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search company or job role..."
+                    aria-label="Search company or job role"
+                    value="{{ search_query }}"
+                >
+
+                <select name="status" aria-label="Filter by application status">
+                    <option value="">All Statuses</option>
+
+                    {% for item in [
+                        'Applied', 'Assessment', 'Interview',
+                        'Offer', 'Rejected', 'Withdrawn'
+                    ] %}
+                        <option value="{{ item }}"
+                            {% if status_filter == item %}selected{% endif %}>
+                            {{ item }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button class="btn btn-primary" type="submit">
+                    Search / Filter
+                </button>
+
+                <a class="clear-link" href="{{ url_for('home') }}">
+                    Clear filters
+                </a>
+            </form>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Company</th>
+                            <th>Job Role</th>
+                            <th>Application Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for job in applications %}
+                            <tr>
+                                <td>{{ job.id }}</td>
+
+                                <td class="company-name">
+                                    {{ job.company_name }}
+                                </td>
+
+                                <td class="job-role">
+                                    {{ job.job_role }}
+                                </td>
+
+                                <td>{{ job.application_date }}</td>
+
+                                <td>
+                                    <span class="status status-{{ job.status|lower }}">
+                                        {{ job.status }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        <a
+                                            class="btn btn-secondary btn-small"
+                                            href="{{ url_for(
+                                                'edit_application',
+                                                application_id=job.id
+                                            ) }}">
+                                            Edit
+                                        </a>
+
+                                        <form
+                                            class="delete-form"
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'delete_application',
+                                                application_id=job.id
+                                            ) }}"
+                                            onsubmit="return confirm('Delete this application?');"
+                                        >
+                                            <button
+                                                class="btn btn-danger btn-small"
+                                                type="submit">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    No applications found.
+                                    Try changing your filters or add a new application.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            Job Application Tracker · Stay organized in your job search
+        </footer>
+
+    </main>
+</body>
+</html>

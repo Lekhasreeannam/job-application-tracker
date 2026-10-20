@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job Application | Job Tracker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #172554;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            color: #64748b;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+        }
+
+        .form-intro {
+            margin: 0 0 22px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #1e293b;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            min-height: 44px;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .help-text {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e8eefc;
+            color: #1d4ed8;
+        }
+
+        .btn-secondary:hover {
+            background: #dbe5fb;
+        }
+
+        .footer {
+            margin-top: 20px;
+            color: #94a3b8;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        @media (max-width: 560px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .form-card {
+                padding: 20px 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 17px;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-actions .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <a class="back-link" href="{{ url_for('home') }}">
+            &larr; Back to Dashboard
+        </a>
+
+        <header class="page-header">
+            <h1>Edit Job Application</h1>
+            <p class="subtitle">
+                Update your application details and keep your records accurate.
+            </p>
+        </header>
+
+        <section class="form-card">
+            <p class="form-intro">
+                Modify the fields below and save your changes.
+            </p>
+
+            <form method="POST">
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="company_name">
+                            Company Name <span class="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="company_name"
+                            name="company_name"
+                            maxlength="100"
+                            autocomplete="organization"
+                            required
+                            value="{{ job.company_name }}"
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="job_role">
+                            Job Role <span class="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="job_role"
+                            name="job_role"
+                            maxlength="100"
+                            required
+                            value="{{ job.job_role }}"
+                        >
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="job_link">Job Posting URL</label>
+                        <input
+                            type="url"
+                            id="job_link"
+                            name="job_link"
+                            maxlength="500"
+                            placeholder="https://example.com/job"
+                            value="{{ job.job_link or '' }}"
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="application_date">
+                            Application Date <span class="required">*</span>
+                        </label>
+                        <input
+                            type="date"
+                            id="application_date"
+                            name="application_date"
+                            required
+                            value="{{ job.application_date }}"
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="status">
+                            Application Status <span class="required">*</span>
+                        </label>
+                        <select id="status" name="status" required>
+                            {% for status in statuses %}
+                                <option
+                                    value="{{ status }}"
+                                    {% if job.status == status %}selected{% endif %}
+                                >
+                                    {{ status }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="deadline">Application Deadline</label>
+                        <input
+                            type="date"
+                            id="deadline"
+                            name="deadline"
+                            value="{{ job.deadline or '' }}"
+                        >
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="notes">Notes</label>
+                        <textarea
+                            id="notes"
+                            name="notes"
+                            rows="4"
+                            placeholder="Interview details, reminders, or preparation notes..."
+                        >{{ job.notes or '' }}</textarea>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">
+                        Save Changes
+                    </button>
+
+                    <a class="btn btn-secondary"
+                       href="{{ url_for('home') }}">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <footer class="footer">
+            Job Application Tracker · Keep your job search organized
+        </footer>
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,665 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Skill Matcher | Job Tracker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .page-header {
+            margin-bottom: 26px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #172554;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            color: #64748b;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #172554;
+            font-size: 20px;
+        }
+
+        h3 {
+            margin: 0 0 6px;
+            color: #1e293b;
+            font-size: 16px;
+        }
+
+        .panel {
+            margin-bottom: 24px;
+            padding: 26px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+        }
+
+        .panel-description {
+            margin-top: -8px;
+            margin-bottom: 22px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .optional {
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #fff;
+            color: #1e293b;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            min-height: 46px;
+        }
+
+        textarea {
+            min-height: 190px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .help-text {
+            margin: 7px 0 0;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .form-actions {
+            margin-top: 24px;
+        }
+
+        .error {
+            padding: 15px 18px;
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            border-radius: 10px;
+            color: #9f1239;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .score-card {
+            margin: 0;
+            padding: 24px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+        }
+
+        .score-label {
+            margin: 0 0 8px;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .score {
+            margin: 0;
+            color: #2563eb;
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .score-description {
+            margin: 10px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .progress-track {
+            height: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+            background: #e2e8f0;
+            border-radius: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 20px;
+        }
+
+        .skill-columns {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .skill-panel {
+            min-width: 0;
+            padding: 22px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .skill-panel h2 {
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            margin: 0 0 18px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            max-width: 100%;
+            padding: 7px 11px;
+            overflow-wrap: anywhere;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .matched {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .missing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .empty-message {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .suggestion-card {
+            margin-top: 14px;
+            padding: 17px;
+            background: #f8faff;
+            border: 1px solid #dbe5fb;
+            border-radius: 10px;
+        }
+
+        .suggestion-card p {
+            margin: 0;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .suggestion-card h3 {
+            color: #1d4ed8;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th,
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        td {
+            overflow-wrap: anywhere;
+        }
+
+        .history-score {
+            color: #1d4ed8;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .footer {
+            margin-top: 26px;
+            color: #94a3b8;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .panel {
+                padding: 20px 16px;
+            }
+
+            .form-grid,
+            .results-grid,
+            .skill-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <a class="back-link" href="{{ url_for('home') }}">
+            &larr; Back to Dashboard
+        </a>
+
+        <header class="page-header">
+            <h1>Job Skill Matcher</h1>
+            <p class="subtitle">
+                Discover how your skills align with job requirements
+                and identify what to learn next.
+            </p>
+        </header>
+
+        <!-- Skill Matcher Form -->
+        <section class="panel">
+            <h2>Analyze Your Skills</h2>
+            <p class="panel-description">
+                Enter your skills and a job description to analyze the match.
+            </p>
+
+            <form method="POST" action="{{ url_for('skill_matcher_page') }}">
+                <div class="form-grid">
+
+                    <div class="field full-width">
+                        <label for="application_id">
+                            Link to a Job Application
+                            <span class="optional">(Optional)</span>
+                        </label>
+
+                        <select id="application_id" name="application_id">
+                            <option value="">No linked application</option>
+
+                            {% for application in applications %}
+                                <option
+                                    value="{{ application.id }}"
+                                    {% if selected_application_id|string == application.id|string %}selected{% endif %}
+                                >
+                                    {{ application.company_name }} -
+                                    {{ application.job_role }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        <p class="help-text">
+                            Link this analysis to an application saved in your dashboard.
+                        </p>
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="skills">Your Skills</label>
+                        <input
+                            type="text"
+                            id="skills"
+                            name="skills"
+                            placeholder="Python, SQL, Pandas, NumPy, Flask"
+                            value="{{ skills }}"
+                            required
+                        >
+                        <p class="help-text">
+                            Separate skills with commas. Include skills you can
+                            confidently explain or demonstrate.
+                        </p>
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="job_description">Job Description</label>
+                        <textarea
+                            id="job_description"
+                            name="job_description"
+                            placeholder="Paste the complete job description here..."
+                            required
+                        >{{ job_description }}</textarea>
+                        <p class="help-text">
+                            Include the responsibilities and required skills
+                            for a more useful comparison.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">
+                        Analyze Skill Match
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Error Message -->
+        {% if error %}
+            <div class="panel error" role="alert">
+                <strong>Unable to analyze:</strong> {{ error }}
+            </div>
+        {% endif %}
+
+        <!-- Matching Results -->
+        {% if result %}
+            <section>
+                <h2>Matching Results</h2>
+
+                <div class="results-grid">
+                    <article class="score-card">
+                        <p class="score-label">Job Skill Coverage</p>
+                        <p class="score">{{ result.skill_coverage }}%</p>
+
+                        <div class="progress-track"
+                             role="progressbar"
+                             aria-label="Job skill coverage"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             aria-valuenow="{{ result.skill_coverage }}">
+                            <div
+                                class="progress-fill"
+                                style="width: {{ [[result.skill_coverage|float, 0]|max, 100]|min }}%;"
+                            ></div>
+                        </div>
+
+                        <p class="score-description">
+                            Percentage of detected job requirements that
+                            match your entered skills.
+                        </p>
+                    </article>
+
+                    <article class="score-card">
+                        <p class="score-label">TF-IDF Text Similarity</p>
+                        <p class="score">{{ result.text_similarity }}%</p>
+
+                        <div class="progress-track"
+                             role="progressbar"
+                             aria-label="Text similarity"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             aria-valuenow="{{ result.text_similarity }}">
+                            <div
+                                class="progress-fill"
+                                style="width: {{ [[result.text_similarity|float, 0]|max, 100]|min }}%;"
+                            ></div>
+                        </div>
+
+                        <p class="score-description">
+                            Measures text similarity between your skills
+                            and the job description. This is not your
+                            probability of getting hired.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="skill-columns">
+
+                    <section class="skill-panel">
+                        <h2>Matched Skills</h2>
+                        <p class="section-description">
+                            Skills from your input that were detected
+                            in the job description.
+                        </p>
+
+                        {% if result.matched_skills %}
+                            <ul class="skill-list">
+                                {% for skill in result.matched_skills %}
+                                    <li class="skill-tag matched">
+                                        &#10003; {{ skill }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="empty-message">
+                                No matching skills were found.
+                            </p>
+                        {% endif %}
+                    </section>
+
+                    <section class="skill-panel">
+                        <h2>Missing Job Skills</h2>
+                        <p class="section-description">
+                            Detected job requirements not included
+                            in your entered skills.
+                        </p>
+
+                        {% if result.missing_skills %}
+                            <ul class="skill-list">
+                                {% for skill in result.missing_skills %}
+                                    <li class="skill-tag missing">
+                                        {{ skill }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="empty-message">
+                                No missing skills were detected.
+                            </p>
+                        {% endif %}
+                    </section>
+
+                </div>
+            </section>
+        {% endif %}
+
+        <!-- Personalized Learning Suggestions -->
+        {% if suggestions %}
+            <section class="panel">
+                <h2>Recommended Skills to Improve</h2>
+                <p class="panel-description">
+                    These job-related skills were not included in your
+                    entered skills. Consider learning or practicing them.
+                </p>
+
+                {% for item in suggestions %}
+                    <article class="suggestion-card">
+                        <h3>{{ item.skill }}</h3>
+                        <p>{{ item.suggestion }}</p>
+                    </article>
+                {% endfor %}
+            </section>
+        {% endif %}
+
+        <!-- Analysis History -->
+        <section class="panel">
+            <h2>Recent Skill-Match Analyses</h2>
+            <p class="panel-description">
+                Review your previous analyses and the applications
+                linked to them.
+            </p>
+
+            {% if history %}
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Skills Entered</th>
+                                <th>Linked Application</th>
+                                <th>Skill Coverage</th>
+                                <th>Text Similarity</th>
+                                <th>Saved At</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in history %}
+                                <tr>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.skills_input }}</td>
+
+                                    <td>
+                                        {% if item.company_name %}
+                                            {{ item.company_name }} -
+                                            {{ item.job_role }}
+                                        {% else %}
+                                            Not linked
+                                        {% endif %}
+                                    </td>
+
+                                    <td class="history-score">
+                                        {{ item.skill_coverage }}%
+                                    </td>
+
+                                    <td class="history-score">
+                                        {{ item.text_similarity }}%
+                                    </td>
+
+                                    <td>{{ item.created_at }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="empty-message">
+                    No saved analyses yet. Analyze a job description to begin.
+                </p>
+            {% endif %}
+        </section>
+
+        <footer class="footer">
+            Job Application Tracker · Build skills with purpose
+        </footer>
+
+    </main>
+</body>
+</html>
